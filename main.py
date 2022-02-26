@@ -16,14 +16,12 @@ def file(file_name):
 @app.route('/method/fill/<col>')
 def fill(col):
     sender.sendFill(col)
-    print('fill matrix')
     return 'ok'
 
 
 @app.route('/method/setPixel/<int:posX>/<int:posY>/<col>')
 def send_pixel(posX, posY, col):
     sender.sendPixel(x=posX, y=posY, color=col)
-    print('set pixel!')
     return 'ok'
 
 

@@ -28,6 +28,7 @@ function setup() {
     }
     canvas.canvas.onclick = mouse;
     document.addEventListener('keypress', keyHandler)
+    document.addEventListener('mousedown', mouse)
     colorpicker = document.getElementById('colorpicker')
 }
 
@@ -44,7 +45,7 @@ function draw() {
     }
 }
 
-function mouse(){
+function mouse(event){
     if (mouseX <= ledOffset || mouseX >= Width-ledOffset)
         return
     if (mouseY <= ledOffset || mouseY >= Height-ledOffset)
@@ -63,13 +64,21 @@ function mouse(){
         }
     }
     if (x != undefined && y != undefined){
-        leds[x][y] = colorpicker.value;
-        y = ledH - 1 - y;
-        send('method/setPixel/' + x + '/' + y + '/' + Number(colorpicker.value.replace('#', '0x')));
+        if (!event.ctrlKey) {
+            leds[x][y] = colorpicker.value
+            y = ledH - 1 - y
+            send('method/setPixel/' + x + '/' + y + '/' + Number(colorpicker.value.replace('#', '0x')));
+        }
+        else {
+            leds[x][y] = 0;
+            y = ledH - 1 - y
+            send('method/setPixel/' + x + '/' + y + '/' + '0');
+        }
     }
 }
 
 function keyHandler(event){
+    console.log(event);
     if (event.key != 'c' && event.key != 'f')
         return;
 
